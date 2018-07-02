@@ -1,3 +1,4 @@
+# Homework for Stanford Course
 import numpy as np
 from matplotlib import pyplot as plt
 
