@@ -13,7 +13,7 @@ def line_pixel_length(d, theta, n):
     # for angle in [np.pi/4,3*np.pi/4],
     # flip along diagonal (transpose) and call recursively
     if np.pi / 4 < theta < 3 / 4 * np.pi:
-        return line_pixel_length(d, np.pi / 2 - theta, n)
+        return line_pixel_length(d, np.pi / 2 - theta, n).T
 
         # for angle in [3*np.pi/4,np.pi],
         # redefine line to go in opposite direction
@@ -39,31 +39,30 @@ def line_pixel_length(d, theta, n):
     y0 = n / 2 + d * ct
 
     y = y0 - x0 * st / ct
-    jy = np.ceil(y)
+    jy = int(np.ceil(y))
     dy = np.remainder(y + n, 1)
 
     for jx in range(n):
         dynext = dy + st / ct
         if dynext < 1:
             if 1 <= jy <= n:
-                L[int(n - jy), int(jx)] = 1 / ct
+                L[n - jy, jx] = 1 / ct
             dy = dynext
         else:
             if 1 <= jy <= n:
-                L[int(n - jy), int(jx)] = (1 - dy) / st
+                L[n - jy, jx] = (1 - dy) / st
             if 1 <= jy + 1 <= n:
-                L[int(n - (jy + 1)), int(jx)] = (dynext - 1) / st
+                L[n - (jy + 1), jx] = (dynext - 1) / st
             dy = dynext - 1
             jy = jy + 1
 
-    return L.reshape((-1,1), order='F').T
+    return L
 
 L = []
 
 for n in range(N):
-    L.append(line_pixel_length(lines_d[n], lines_theta[n], n_pixels))
-
-
+    l = line_pixel_length(lines_d[n], lines_theta[n], n_pixels)
+    L.append(l.reshape((-1,),order='F'))
 
 
 L = np.array(L).reshape((N, n_pixels**2))
