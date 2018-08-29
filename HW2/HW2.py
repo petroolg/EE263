@@ -100,7 +100,11 @@ print((X.dot(pow_dens)).T[0])
 np.random.seed(1)
 r1 = np.random.random((20,1))
 
-ar2 = np.linalg.inv(X.dot(np.diag(tungsten)).dot(colors.T)).dot(X).dot(np.diag(tungsten)).dot(r1)
+ar2 = np.linalg.inv(X
+                    .dot(np.diag(tungsten))
+                    .dot(colors.T))\
+    .dot(X).dot(np.diag(tungsten))\
+    .dot(r1)
 r2 = colors.T.dot(ar2)
 
 # control the results
