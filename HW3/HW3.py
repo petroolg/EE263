@@ -58,16 +58,20 @@ def line_pixel_length(d, theta, n):
 
     return L
 
+
+#################
+# Solution to HW3
+#################
+
 L = []
 
 for n in range(N):
-    l = line_pixel_length(lines_d[n], lines_theta[n], n_pixels)
-    L.append(l.reshape((-1,),order='F'))
+    line = line_pixel_length(lines_d[n], lines_theta[n], n_pixels)
+    L.append(line.ravel())
 
 
-L = np.array(L).reshape((N, n_pixels**2))
 x = np.linalg.pinv(L).dot(y)
 
-plt.imshow(x.reshape((n_pixels,n_pixels), order='F'))
+plt.imshow(x.reshape((n_pixels, n_pixels)))
 plt.colorbar()
 plt.show()
